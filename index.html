@@ -1,0 +1,190 @@
+<html>
+	<head>
+		<!-- CSS only -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+	<!-- JavaScript Bundle with Popper -->
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+	</head>
+	<body>
+		<div class="jumbotron">
+			<div class="container">
+				<h1>Simple algorithm and statistics</h1>
+				<p>
+					Every spin represented in the table is made by random bet between 1 and 20
+				</p>
+			<button type="button" onclick="generateStatistics()" class="btn btn-primary">Generate</button>
+			</div>
+		</div>
+		
+		<div class="container">
+			<table class="table table-striped">
+			  <thead>
+				<tr>
+				  <th scope="col">Spins</th>
+				  <th scope="col">Bet</th>
+				  <th scope="col">Win</th>
+				  <th scope="col">Profit</th>
+				  <th scope="col">Payback rate</th>
+				</tr>
+			  </thead>
+			  <tbody id="table_body">
+			  </tbody>
+			</table>
+		</div>
+	</body>
+</html>
+
+<script>
+function generateStatistics() {
+	var spinsCollection = [1, 10, 20, 50, 100, 500, 1000, 5000, 10000, 100000, 1000000];
+	var tableBody = document.getElementById('table_body');
+	tableBody.innerHTML = '';
+
+	for (let i = 0; i < spinsCollection.length; i++) {
+		var row = tableBody.insertRow(i);
+		var infoSpin = spin(spinsCollection[i]);
+		var profit = getProfit(infoSpin[0], infoSpin[1]);
+		var payBack = getPaybackRate(infoSpin[1], infoSpin[0]);
+
+		var spinCell = row.insertCell(0);
+		spinCell.innerHTML = spinsCollection[i];
+
+		var betCell = row.insertCell(1);
+		betCell.innerHTML = infoSpin[0];
+
+		var wonCell = row.insertCell(2);
+		wonCell.innerHTML = infoSpin[1];
+
+		var profitCell = row.insertCell(3);
+		profitCell.innerHTML = profit;
+
+		var paybackRateCell = row.insertCell(4);
+		paybackRateCell.innerHTML = payBack + '%';
+	}
+
+}
+
+//returns the sum of random bets between 1-5 and the result
+//after the given amount of spins
+function spin(spins) {
+	var totalWin = 0;
+	var totalBet = 0;
+	
+	for (let i = 0; i < spins; i++) {
+		var coef = getCoeficitent();
+		var bet = getRandomInt(1, 20);
+		totalBet += bet;
+		if (coef > 0) {
+			var win = bet * coef;
+			totalWin += win;
+		}
+	}
+	
+	return [totalBet, totalWin];
+}
+
+//coeficient generation algorithm
+function getCoeficitent() {
+	var number = getRandomInt(1, 1000000);
+	if (number < 700000) {
+		return 0;
+	}
+	
+	if (number < 900000) {
+		return 2;
+	}
+	
+	if (number < 973000) {
+		return 4;
+	}
+	
+	if (number < 974000) {
+		return 5;
+	}
+	
+	if (number < 975000) {
+		return 6;
+	}
+	
+	if (number < 983000) {
+		return 7;
+	}
+	
+	if (number < 990000) {
+		return 8;
+	}
+	
+	if (number < 994000) {
+		return 9;
+	}
+	
+	if (number < 997000) {
+		return 10;
+	}
+	
+	if (number < 998000) {
+		return 12;
+	}
+	
+	if (number < 998500) {
+		return 14;
+	}
+	
+	if (number < 999700) {
+		return 18;
+	}
+	
+	if (number < 999850) {
+		return 50;
+	}
+	
+	if (number < 999910) {
+		return 120;
+	}
+	
+	if (number < 999950) {
+		return 160;
+	}
+	
+	if (number < 999979) {
+		return 180;
+	}
+	
+	if (number < 999981) {
+		return 200;
+	}
+	
+	if (number < 999983) {
+		return 250;
+	}
+	
+	if (number < 999995) {
+		return 1000;
+	}
+	
+	if (number < 999997) {
+		return 1500;
+	}
+	
+	if (number < 999999) {
+		return 2000;
+	}
+	
+	return 0;
+}
+
+function getPaybackRate(profit, bet) {
+	if (profit === 0) {
+		return 0;
+	}
+	return Math.floor((Math.abs(profit) / bet) * 100);
+}
+
+function getProfit(bet, won) {
+	return won - bet;
+}
+
+function getRandomInt(min, max) {
+  return Math.round(Math.random() * (max - min) + min);
+}
+</script>
