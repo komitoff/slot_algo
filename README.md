@@ -1,1 +1,1 @@
-# slot_algo
+# super simple slot algorithm with
